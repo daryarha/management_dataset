@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br/>
+<div class="container bg-light">
+    <br/>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="task-tab" data-bs-toggle="tab" data-bs-target="#task" type="button" role="tab" aria-controls="home" aria-selected="true">Your Task List</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="booking-tab" data-bs-toggle="tab" data-bs-target="#booking" type="button" role="tab" aria-controls="profile" aria-selected="false">Booking Task</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="task" role="tabpanel" aria-labelledby="task-tab">
+            <h3 class="title text-center mt-3">Your Task</h3>
+            <div class="col-md-6 offset-md-3"><hr></div>
+            <table class="table mb-3">
+                <thead>
+                  <tr>
+                    <th scope="col">Filename</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if task %}
+                    {% for data in task %}
+                    <tr>
+                        <td>{{ data['dataset'].link_url }}</td>
+                        <td>
+                            <a href="/download/{{ data['dataset'].link_url }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Download dataset"><i data-feather="download"></i></a>
+                            <a href="/delete/{{ data['dataset'].link_url }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete task"><i data-feather="trash-2"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                        <td colspan="2" class="text-center">You dont have any task yet</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="booking" role="tabpanel" aria-labelledby="booking-tab">
+            <h3 class="title text-center mt-3">Booking Task</h3>
+            <div class="col-md-6 offset-md-3"><hr></div>
+            <table class="table mb-3">
+                <thead>                
+                  <tr>
+                    <th scope="col">Filename</th>
+                    <th scope="col">Book status</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if dataset %}
+                    {% for data in dataset %}
+                    <tr>
+                        <td>{{ data['link_url'] }}</td>
+                        <td>
+                            {% if data['is_booked']==False  %}
+                                <span class="text-primary">Available</span>
+                            {% else %}
+                                <span class="text-danger">            
+                                    {% for dt_task in data['tasks']  %}
+                                        {% if dt_task.is_booked==True %}
+                                            Already booked by {{ dt_task.user.name }}
+                                        {% endif %}
+                                    {% endfor %}         
+                                </span>                            
+                            {% endif %}
+                        </td>
+                        <td>
+                            <!-- <a href="/dataset/delete/{{ data['link_url'] }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete booking"><i data-feather="trash-2"></i></a> -->
+                            {% for dt_task in data['tasks']  %}
+                                {% if dt_task.user_id==my_id and dt_task.is_booked==True %}
+                                    <a href="/revoke/{{ data['link_url'] }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Revoke booking"><i data-feather="x"></i></a>     
+                                {% endif %}
+                            {% endfor %}                            
+                            {% if data['is_booked']==False  %}
+                                <a href="/booking/{{ data['link_url'] }}" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Book the task"><i data-feather="book-open"></i></a>
+                            {% endif %}
+                            
+                        </td>
+                    </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center">You dont have any dataset yet</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+            </table>
+
+        </div>
+      </div>
+    <br/>
+</div>
+{% endblock %}
