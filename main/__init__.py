@@ -37,5 +37,5 @@ def create_app():
 
     from .dataset import dataset as dataset_blueprint
     app.register_blueprint(dataset_blueprint)
-    app.run()
+    #app.run()
     return app
