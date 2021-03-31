@@ -7,7 +7,12 @@
     4. type venv\Scripts\activate
     5. type python wsgi.py
     6. open 127.0.0.1:5000 in the browser
-    7. Login using name <b>test</b> and password <b>test</b> or name <b>test2</b> and password <b>test2</b>
+    7. Login using:
+        name: test 
+        password: test 
+        or 
+        name: test2
+        password: test2
     
 ## To access globally:
    - Access here
