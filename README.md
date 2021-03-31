@@ -15,5 +15,5 @@
         password: test2
     
 ## To access globally:
-   - Access here
+   - Access here https://management-dataset.herokuapp.com
 
