@@ -1,2 +1,2 @@
-from main import db, create_app
-db.create_all(app=create_app())
+from main import create_app
+app = create_app()
